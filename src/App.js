@@ -4,7 +4,6 @@ import "./App.css";
 import Footer from "./Components/Footer";
 import Header from "./Components/Header";
 import Home from "./Pages/Home";
-
 function App() {
   const [status, setStatus] = useState(false);
   const [users, setUsers] = useState([]);
@@ -12,18 +11,16 @@ function App() {
   if (status) {
     fetch(`https://reqres.in/api/users?page=${pages}`)
       .then((res) => res.json())
-      .then((data) => setUsers(data));
+      .then((data) => {
+        setUsers(data.data);
+      });
   }
+  const data = { users, status, setPages, pages };
   return (
     <div className='h-screen '>
       <Header setStatus={setStatus} />
       <Routes>
-        <Route
-          path='/'
-          element={
-            <Home users={users.data} setPages={setPages} pages={pages} />
-          }
-        ></Route>
+        <Route path='/' element={<Home data={data} />}></Route>
       </Routes>
       <Footer></Footer>
     </div>

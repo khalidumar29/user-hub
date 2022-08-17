@@ -1,6 +1,8 @@
 import React from "react";
 import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
-const Home = ({ users, setPages, pages }) => {
+import Loading from "../Components/Loading";
+const Home = ({ data }) => {
+  const { users, status, setPages, pages } = data;
   const handlePrevious = () => {
     if (pages > 1) {
       setPages(pages - 1);
@@ -11,14 +13,18 @@ const Home = ({ users, setPages, pages }) => {
       setPages(pages + 1);
     }
   };
+  if (status && users.length < 1) {
+    return <Loading />;
+  }
   return (
     <div className='lg:mx-[12%] md:mx-[5%] mt-4'>
       <div
         className={
-          users && "grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5"
+          users.length > 0 &&
+          "grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5"
         }
       >
-        {users ? (
+        {users.length > 0 ? (
           <>
             {users.map((user) => (
               <div
@@ -43,12 +49,14 @@ const Home = ({ users, setPages, pages }) => {
             ))}
           </>
         ) : (
-          <div class='flex justify-center items-center'>
-            <div class='animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900'></div>
-          </div>
+          <>
+            <h1 className='text-5xl text-center'>
+              click the get user button to get user
+            </h1>
+          </>
         )}
       </div>
-      {users && (
+      {users.length > 0 && (
         <>
           {" "}
           <div className='flex justify-between py-3'>
